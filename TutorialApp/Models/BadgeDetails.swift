@@ -1,6 +1,7 @@
 import Foundation
+import SwiftUI
 
-enum BadgeDetails {
+enum BadgeDetails: Int, Codable, CaseIterable{
     case firstEntry
     case fiveStars
     case shutterbug
@@ -28,6 +29,66 @@ enum BadgeDetails {
             
         }
         
+    }
+    
+    var title: String {
+        switch self{
+        case .firstEntry:
+            return "Start the Journey"
+        case .fiveStars:
+            return "5 Stars"
+        case .shutterbug:
+            return "Shutterbug"
+        case .expressive:
+            return "Expressive"
+        case .perfectTen:
+            return "Perfect 10"
+        }
+    }
+    
+    var image : ImageResource {
+        switch self {
+        case .firstEntry:
+            return .firstEntryUnlocked
+        case .fiveStars:
+            return .fiveStarsUnlocked
+        case .shutterbug:
+            return .shutterbugUnlocked
+        case .expressive:
+            return .expressiveUnlocked
+        case .perfectTen:
+            return .perfectTenUnlocked
+        }
+    }
+    
+    var lockedImage : ImageResource {
+        switch self {
+        case .firstEntry:
+            return .firstEntryLocked
+        case .fiveStars:
+            return .fiveStarsLocked
+        case .shutterbug:
+            return .shutterbugLocked
+        case .expressive:
+            return .expressiveLocked
+        case .perfectTen:
+            return .perfectTenLocked
+        }
+    }
+    
+    var color : Color {
+        switch self {
+        case .firstEntry:
+            return .ember
+        case .fiveStars:
+            return .ruby
+        case .shutterbug:
+            return .sapphire
+        case .expressive:
+            return .ocean
+        case .perfectTen:
+            return .ember
+        }
     }
     
     var congratulatoryMessage: String {
