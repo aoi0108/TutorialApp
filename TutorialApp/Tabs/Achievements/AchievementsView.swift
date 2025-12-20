@@ -8,6 +8,9 @@ struct AchievementsView: View {
     @Query(filter: #Predicate<Badge> {$0.timestamp == nil})
     private var lockedBadges: [Badge]
     
+    @Query(sort: \Moment.timestamp)
+    private var moments: [Moment]
+    
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -18,14 +21,26 @@ struct AchievementsView: View {
     }
     
     private var contentStack: some View {
-        VStack {
-            header("Your Badges")
-            ForEach(sortedUnlockedBadges){ badge in
-                Text(badge.details.title)
+        VStack(alignment: .leading) {
+            StreakView(numberOfDays: StreakCalculator().calculateStreak(for: moments))
+                .frame(maxWidth: .infinity)
+            if !unlockedBadges.isEmpty {
+                header("Your Badges")
+                ScrollView(.horizontal){
+                    HStack{
+                        ForEach(sortedUnlockedBadges){ badge in
+                            UnlockedBadgeView(badge: badge)
+                        }
+                    }
+                }
+                .scrollClipDisabled()
+                .scrollIndicators(.hidden)
             }
-            header("Locked Badges")
-            ForEach(sortedLockedBadges){ badge in
-                Text(badge.details.title)
+            if !lockedBadges.isEmpty{
+                header("Locked Badges")
+                ForEach(sortedLockedBadges){ badge in
+                    LockedBadgeView(badge: badge)
+                }
             }
         }
         .padding()
